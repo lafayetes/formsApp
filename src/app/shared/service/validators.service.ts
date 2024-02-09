@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 
 @Injectable({providedIn: 'root'})
 export class ValidatorsService {
@@ -54,6 +54,28 @@ export class ValidatorsService {
       }
     }
     return null;
+
+  }
+
+
+  public isFieldOneEqualFieldTwo(field1:string, field2:string){
+    //Aqui esta validacion devuelve el formgroup por lo que esta validacion se coloca luego del fb.group({})
+    return(formGroup:AbstractControl):ValidationErrors|null =>{
+
+      const fieldValue1 = formGroup.get(field1)?.value;
+      const fieldValue2 = formGroup.get(field2)?.value;
+
+      if(fieldValue1 !== fieldValue2){
+        // En esta parte basicamente se asigna en el input que se colocara el error.
+        formGroup.get(field2)?.setErrors({notEqual:true});
+        return {notEqual:true}
+      }
+      // Aqui va el codigo en caso de que se cumpla la validacion
+
+      formGroup.get(field2)?.setErrors(null);
+      return null;
+
+    }
 
   }
 
