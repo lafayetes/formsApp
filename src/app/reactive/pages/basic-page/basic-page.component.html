@@ -26,7 +26,7 @@
         <label class="col-sm-3 col-form-label">Precio</label>
         <div class="col-sm-9">
           <input type="number" formControlName="price" class="form-control" placeholder="Precio del producto">
-          <span class="form-text text-danger">
+          <span *ngIf="isValidField('price')" class="form-text text-danger">
             {{getFieldError('price')}}
           </span>
         </div>
@@ -38,7 +38,7 @@
         <div class="col-sm-9">
           <input type="number" formControlName="inStorage" class="form-control" placeholder="Existencias del producto">
 
-          <span class="form-text text-danger">
+          <span *ngIf="isValidField('inStorage')" class="form-text text-danger">
             {{getFieldError('inStorage')}}
           </span>
         </div>

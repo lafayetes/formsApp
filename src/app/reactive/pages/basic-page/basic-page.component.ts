@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ValidatorsService } from '../../../shared/service/validators.service';
 
 @Component({
   templateUrl: './basic-page.component.html',
@@ -23,35 +24,20 @@ export class BasicPageComponent {
     inStorage: [0, [Validators.required, Validators.min(0)]],
   })
 
-  isValidField(field: string): boolean | null {
-    return this.myForm.controls[field].errors && this.myForm.controls[field].touched;
+  isValidField(field: string) {
+    return this.validatorsService.isValidField(this.myForm, field);
   }
-
   getFieldError(field: string): string | null {
 
-    if (!this.myForm.controls[field]) return null;
-
-    const errors = this.myForm.controls[field].errors || {};
-
-    for (const key of Object.keys(errors)) {
-
-      switch (key) {
-        case 'required':
-          return 'Este campo es requerido'
-        case 'minlength':
-          return `Este campo debe ser de almenos ${errors['minlength'].requiredLength} letras`
-        case 'min':
-          return `El campo debe de ser 0 o mayor`
-
-
-
-        default:
-          return null;
-      }
-    }
-    return null;
+    return this.validatorsService.getFieldError(this.myForm, field);
 
   }
+  // getFieldError(field:string){
+  //   return this.validatorsService.getFieldError(this.myForm,field);
+
+
+  // }
+
 
   onSave() {
 
@@ -64,5 +50,8 @@ export class BasicPageComponent {
     console.log(this.myForm.value);
 
   }
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private validatorsService: ValidatorsService
+  ) { }
 }
